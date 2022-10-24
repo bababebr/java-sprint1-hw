@@ -22,7 +22,12 @@ public class StepTracker {
         }
     }
     public void addDay(int month, int day, int stepCount){
-        db.get(month)[day] = stepCount > 0 ? stepCount : 0;
+        if(stepCount > 0) {
+            db.get(month)[day] = stepCount;
+        }
+        else {
+            System.out.println("Число дней не может быть отрицательным");
+        }
     }
     public void printMonthStat(int month){
         StringBuilder sb = new StringBuilder();
@@ -77,10 +82,14 @@ public class StepTracker {
         int maxRow = 0;
         int result = 0;
 
-        for (int d : db.get(month)) {
-            maxRow = d > goal ? maxRow + 1 : (result = maxRow > result ? maxRow : result);
-            maxRow = d > goal ? maxRow : 0;
-
+        for (int step : db.get(month)) {
+            if(step >= goal){
+                maxRow += 1;
+                result = result < maxRow ? maxRow : result;
+            }
+            else {
+                maxRow = 0;
+            }
         }
         return result;
     }

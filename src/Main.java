@@ -11,39 +11,45 @@ public class Main {
 
             printMenu();
             int command = scanner.nextInt();
-            if(!List.of(0, 1, 2, 3, 4).contains(command)) {
-                System.out.println("Команда не существует, введите еще раз!");
-                continue;
-            }
-            System.out.println("Введите номер месяц (1 - Январь, 12 - Декабрь)");
-            int month = scanner.nextInt()-1;
-            System.out.println("Введите порядковый номер дня (1-30)");
-            int day = scanner.nextInt()-1;
 
-            if(month >= 0 && month < 12){
-                if(day >= 0 && day < 12) {} else { continue; }
+            if(command == 1 || command == 2) {
+                System.out.println("Введите номер месяц (1 - Январь, 12 - Декабрь)");
+                int month = scanner.nextInt()-1;
+                if( !(month >= 0 && month < 12) ){
+                    System.out.println("Пожалуйста, проверьте введенный порядковый номер месяца и дня");
+                    continue;
                 }
-            else {
-                System.out.println("Пожалуйста, проверьте введенный порядковый номер месяца и дня");
-                continue;
-            }
 
-
-            if(command == 1) {
-                System.out.println("Введите кол-во шагов");
-                int stepCount = scanner.nextInt();
-               tracker.addDay(month, day, stepCount);
+                if (command == 1) {
+                    System.out.println("Введите порядковый номер дня (1-30)");
+                    int day = scanner.nextInt()-1;
+                    if(!(day >= 0 && day < 30)) {
+                        System.out.println("Пожалуйста, проверьте введенный порядковый номер месяца и дня");
+                        continue;
+                    }
+                    System.out.println("Введите кол-во шагов");
+                    int stepCount = scanner.nextInt();
+                    tracker.addDay(month, day, stepCount);
+                }
+                if(command == 2) {
+                    tracker.printMonthStat(month);
+                }
             }
-            if(command == 2) {
-                tracker.printMonthStat(month);
-            }
-            if (command == 3){
+            else if(command == 3) {
                 System.out.println("Введите кол-во шагов");
                 int goal = scanner.nextInt();
+                if(goal < 0) {
+                    System.out.println("Число шагов не может быть отрицательным");
+                    continue;
+                }
                 tracker.setGoal(goal);
             }
-            if (command == 0){
+            else if (command == 0){
                 break;
+            }
+            else {
+                System.out.println("Команда не существует, введите еще раз!");
+                continue;
             }
         }
     }
