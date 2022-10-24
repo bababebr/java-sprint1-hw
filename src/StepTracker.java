@@ -1,20 +1,14 @@
-
-import javax.naming.directory.InvalidAttributesException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StepTracker {
-    String[] months = {"1-ПН", "2-ВТ", "3-СР", "4-ЧТ", "5-ПТ", "6-СБ", "7-ВС"};
-
-    public int getGoal() {
-        return goal;
-    }
+    private int goal = 10_000;
 
     public void setGoal(int goal) {
         this.goal = goal;
     }
 
-    private int goal = 10_000;
+
     private Converter converter;
     private Map<Integer, int[]> db = new HashMap<>();
     StepTracker(){
@@ -30,16 +24,14 @@ public class StepTracker {
     public void addDay(int month, int day, int stepCount){
         db.get(month)[day] = stepCount > 0 ? stepCount : 0;
     }
-
-    public int getSteps(int month, int day){
-        return db.get(month)[day];
-    }
     public void printMonthStat(int month){
+        StringBuilder sb = new StringBuilder();
         int day = 1;
         for(int d : db.get(month)){
-            System.out.print(day + " день: " + d + ", ");
+            sb.append(day + " день: " + d + ", ");
             day++;
         }
+        System.out.println(sb.replace(sb.length()-2, sb.length(), "."));
 
         System.out.println("Общее количество шагов за месяц: " + monthStepCount(month));
         System.out.println("Максимальное пройденное количество шагов в месяце: "+ dayWithMaxStepCount(month));
@@ -86,8 +78,8 @@ public class StepTracker {
         int result = 0;
 
         for (int d : db.get(month)) {
-            maxRow = d > 0 ? maxRow + 1 : (result = maxRow > result ? maxRow : result);
-            maxRow = d > 0 ? maxRow : 0;
+            maxRow = d > goal ? maxRow + 1 : (result = maxRow > result ? maxRow : result);
+            maxRow = d > goal ? maxRow : 0;
 
         }
         return result;
